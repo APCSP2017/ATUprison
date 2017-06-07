@@ -5,6 +5,7 @@
 #     strategy_description: a string
 #     move: A function that returns 'c' or 'b'
 ####
+#Add comment.
 
 team_name = 'E0'
 strategy_name = 'Collude'
