@@ -6,9 +6,9 @@
 #     move: A function that returns 'c' or 'b'
 ####
 
-team_name = 'The name the team gives to itself' # Only 10 chars displayed.
-strategy_name = 'The name the team gives to this strategy'
-strategy_description = 'How does this strategy decide?'
+team_name = 'Petcaugh' # Only 10 chars displayed.
+strategy_name = 'Percentage Attack'
+strategy_description = 'You wish you knew.'
     
 def move(my_history, their_history, my_score, their_score):
     ''' Arguments accepted: my_history, their_history are strings.
@@ -18,15 +18,35 @@ def move(my_history, their_history, my_score, their_score):
     Returns 'c' or 'b'. 
     '''
 
-    # my_history: a string with one letter (c or b) per round that has been played with this opponent.
-    # their_history: a string of the same length as history, possibly empty. 
-    # The first round between these two players is my_history[0] and their_history[0].
-    # The most recent round is my_history[-1] and their_history[-1].
+    opp_b = 0
+    opp_c = 0
+    if len(their_history)<10: #Collude for the first 10 rounds
+        return 'c'
+    elif len(their_history)<20:#Betray for rounds 10-20
+        return 'b'
+    else:
+        #Record how many times the opponent has betrayed and colluded.
+        #This will then be used to make decisions based on percentages
+        for choice in their_history:
+            if choice == 'b':
+                opp_b += 1
+            else:
+                opp_c += 1
+                
+        #If the opponent has not colluded, then BETRAY.
+        #Otherwise, calculate the percentage
+        if opp_c != 0:
+            percentage = float(opp_b / opp_c)
+        else:
+            return 'b'
+            
+        #If the opponent has betrayed more than they have colluded,
+        #then BETRAY. Otherwise COLLUDE.
+        if percentage >= 1:
+            return 'b'
+        else:
+            return 'c'
     
-    # Analyze my_history and their_history and/or my_score and their_score.
-    # Decide whether to return 'c' or 'b'.
-    
-    return 'c'
 
     
 def test_move(my_history, their_history, my_score, their_score, result):
